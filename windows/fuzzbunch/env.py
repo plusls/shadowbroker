@@ -22,7 +22,7 @@ try:
         platform = sys.platform + "-" + os.uname()[4]
     arch = SUPPORTED_ARCH[platform]
 except KeyError:
-    print "You are running on an unsuported architecture!"
+    print("You are running on an unsuported architecture!")
     sys.exit(-1)
 
 """

@@ -89,7 +89,7 @@ def superTuple(typename, *attribute_names):
         __slots__ = ()
         def __new__(cls, *args):
             if len(args) != nargs:
-                raise TypeError, '%s takes %d args (%d given)' % (typename, nargs, len(args))
+                raise TypeError('%s takes %d args (%d given)' % (typename, nargs, len(args)))
             return tuple.__new__(cls, args)
         def __repr__(self):
             return '%s(%s)' % (typename, ', '.join(map(repr, self)))
@@ -162,7 +162,7 @@ def validateip(ip):
         # Figure out whether we have a valid IP.  This should not throw an exception
         socket.getaddrinfo(ip, None)
     except Exception as e:
-        print "Address %s not valid: %s" % (ip, e)
+        print("Address %s not valid: %s" % (ip, e))
         return None
     return ip
 

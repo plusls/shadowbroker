@@ -2,9 +2,7 @@
 
 ## Update
 
-Update python2.6 to python2.7.8
-
-add python x64 support
+try to add python3 support
 
 install dep: `python -m install pywin32`
 
