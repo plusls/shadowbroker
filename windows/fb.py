@@ -69,7 +69,7 @@ def load_plugins(fb):
     addplugins(fb, "Payload",       PAYLOAD_DIR, EDFPlugin)
     addplugins(fb, "Touch",         TOUCH_DIR,   EDFPlugin)
     addplugins(fb, "ImplantConfig", IMPLANT_DIR, EDFPlugin)
-    addplugins(fb, "ListeningPost", LP_DIR,      EDFPlugin)
+    #addplugins(fb, "ListeningPost", LP_DIR,      EDFPlugin)
     addplugins(fb, "Special",       SPECIAL_DIR, DAVEPlugin, DeployableManager)
     #    addplugins(fb, "EDE-Exploit",   EDE_DIR,     EDEPlugin)
     #    addplugins(fb, "Trigger",       TRIGGER_DIR, EDFPlugin)

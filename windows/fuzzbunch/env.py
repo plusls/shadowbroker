@@ -5,6 +5,7 @@ and setting some global variables
 
 import sys
 import os
+from platform import architecture
 
 __all__ = ['setup_core_paths', 'setup_lib_paths']
 
@@ -38,7 +39,13 @@ def setup_core_paths( fbdir ):
     os.environ['PATH'] = EDFLIB_DIR + os.pathsep + os.environ['PATH']   # The EDF libs should always come FIRST in the system PATH...
     os.environ['FBDIR'] = FB_DIR
     sys.path.append(os.path.join(FB_DIR, 'fuzzbunch'))
-    sys.path.append(EDFLIB_DIR)
+    if arch == 'x86-Windows' and architecture()[0] == '64bit':
+        sys.path.append(os.path.join(FB_DIR, "lib", 'x64-Windows'))
+        sys.path.append(EDFLIB_DIR)
+        EDFLIB_DIR = os.path.join(FB_DIR, "lib", 'x64-Windows')
+        os.environ['PATH'] = EDFLIB_DIR + os.pathsep + os.environ['PATH']
+    else:
+        sys.path.append(EDFLIB_DIR)
     return (FB_FILE, FB_DIR, EDFLIB_DIR)
 
 def setup_lib_paths(fbdir, libdir):

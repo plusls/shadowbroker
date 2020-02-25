@@ -1,3 +1,15 @@
+# shadowbroker
+
+## Update
+
+Update python2.6 to python2.7.8
+
+add python x64 support
+
+install dep: `python -m install pywin32`
+
+##  
+
 https://steemit.com/shadowbrokers/@theshadowbrokers/lost-in-translation
 http://archive.is/https://github.com/misterch0c/shadowbroker
 
@@ -29,9 +41,7 @@ The following files were deleted after this repository was reported because it c
 * swift/DNS%20Zone%20Trans%202013_10_
 * swift/NOC_firewall_passwords_30May2
 
-
-
-# Exploits
+## Exploits
 
 - **EARLYSHOVEL** RedHat 7.0 - 7.1 Sendmail 8.11.x exploit 
 - **EBBISLAND (EBBSHAVE)** root RCE via RPC XDR overflow in Solaris 6, 7, 8, 9 & 10 (possibly newer) both SPARC and x86.
@@ -64,8 +74,7 @@ The following files were deleted after this repository was reported because it c
 - **ESSAYKEYNOTE** 
 - **EVADEFRED**
 
-
-# Utilities
+## Utilities
 
 - **PASSFREELY** utility which "Bypasses authentication for Oracle servers"
 - **SMBTOUCH** check if the target is vulnerable to samba exploits like ETERNALSYNERGY, ETERNALBLUE, ETERNALROMANCE 
