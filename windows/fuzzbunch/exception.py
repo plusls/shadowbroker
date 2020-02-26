@@ -1,6 +1,7 @@
 """
 Exception handling classes.
 """
+from __future__ import print_function
 import sys
 
 __all__ = [
@@ -70,13 +71,14 @@ def exceptionwrapped(fn):
         except:
             import traceback
             stacktrace = traceback.format_exc()
-            print >>sys.stderr, "==============================================================="
-            print >>sys.stderr, "="
-            print >>sys.stderr, "= Encountered an unhandled error.  Please provide the following"
-            print >>sys.stderr, "= information to the developer"
-            print >>sys.stderr, "= "
-            print >>sys.stderr, "==============================================================="
-            print >>sys.stderr, "%s" % (stacktrace) 
+            print("===============================================================", file=sys.stderr)
+            print("=", file=sys.stderr)
+            print("= Encountered an unhandled error.  Please provide the following", file=sys.stderr)
+            print("= information to the developer", file=sys.stderr)
+            print("===============================================================", file=sys.stderr)
+            print("= ", file=sys.stderr)
+            print("===============================================================", file=sys.stderr)
+            print("%s" % (stacktrace) , file=sys.stderr)
             return None
     wrap.__doc__ = fn.__doc__
     return wrap

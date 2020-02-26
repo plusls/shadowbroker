@@ -150,8 +150,8 @@ class DeployableManager(PluginManager):
                         self.io.print_warning("Connection to Target Established")
                         self.io.print_warning("Waiting For Next Stage")
                 else:
-                    raise exception.CmdErr, "%s Failed" % plugin.name
+                    raise exception.CmdErr("%s Failed" % plugin.name)
         else:
             #self.do_validate()
-            raise exception.CmdErr, "Execution Aborted"
+            raise exception.CmdErr("Execution Aborted")
         self.io.newline()

@@ -752,10 +752,11 @@ class Config:
         self.init_config()
 
     def init_config(self):
-        self.configXML     = exma.readParamsFromEM(ctypes.c_char_p(self.xmlInConfig))
+        self.configXML     = exma.readParamsFromEM(ctypes.c_char_p(self.xmlInConfig.encode()))
         # Config_unmarshal can fail and return None, which 
         # raises TrchError when passed to Config_getID
         try:
+            print(repr(self.xmlInConfig))
             self.config        = trch.Config_unmarshal(self.configXML)
             if self.config is None:
                 raise TrchError("Parse error in the output configuration")

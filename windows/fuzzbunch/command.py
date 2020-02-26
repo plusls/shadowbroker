@@ -200,7 +200,7 @@ class FbCmd(cmd.Cmd):
     def runcmd(self, line):
         try:
             stop = self.runcmd_noex(line)
-        except exception.CmdErr, err:
+        except exception.CmdErr as err:
             self.io.print_error(err.getErr())
             stop = None
         return stop
@@ -475,7 +475,7 @@ class FbCmd(cmd.Cmd):
         try:
             retcode = subprocess.call(arg, shell=True)
             del retcode
-        except OSError, e:
+        except OSError as e:
             self.io.print_error("Execution failed: " + e.message)
         except KeyboardInterrupt:
             self.io.print_warning("Execution aborted by user: Ctrl-c")
@@ -539,9 +539,9 @@ class FbCmd(cmd.Cmd):
                                for line in open(inputList[0]).readlines()
                                if not line.startswith('#') ]
                 except IOError:
-                    raise exception.CmdErr, "Couldn't read script file"
+                    raise exception.CmdErr("Couldn't read script file")
                 self.runcmdlist_noex(script)
-            except exception.CmdErr, err:
+            except exception.CmdErr as err:
                 self.io.print_error(err.getErr())
                 self.io.print_error("Aborting script")
             finally:
