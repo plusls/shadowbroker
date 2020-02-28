@@ -5,6 +5,10 @@ import numbers
 import platform
 if (platform.python_version_tuple()[0] == '3'):
     raw_input = input
+    long = int
+    xrange = range
+else:
+    range = xrange
 __all__ = ['Menu']
 _dsz_mode = False
 try:

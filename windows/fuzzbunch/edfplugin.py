@@ -221,7 +221,8 @@ class EDFPlugin(Plugin):
                 session.mark_ready()
             else:
                 session.mark_used()
-        except (ValueError, TrchError, AttributeError) as e:
+        #except (ValueError, TrchError, AttributeError) as e:
+        except (OSError) as e:
             # We get here if the following conditions happen:
             #  Argument errors to any calls
             #  Plug-in failed and didn't actually write an outconfig

@@ -10,6 +10,13 @@ this file.  Specialized print functions provide a template-like facility.
 import sys
 import exception
 from util import variable_replace
+import platform
+if (platform.python_version_tuple()[0] == '3'):
+    raw_input = input
+    long = int
+    xrange = range
+else:
+    range = xrange
 
 MAX_OUTPUT_ROWS = 5
 MAX_PROMPT_ECHO_LEN = 50

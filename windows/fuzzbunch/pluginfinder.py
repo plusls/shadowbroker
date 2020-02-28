@@ -2,7 +2,7 @@ import pluginmanager
 import sys
 import os
 import exception
-
+import traceback
 mswindows = (sys.platform == "win32")
 
 if mswindows:
@@ -79,15 +79,17 @@ def addplugins(fb, type, location, constructor, manager=pluginmanager.PluginMana
     manager = fb.register_manager(type, manager)
     
     for plugin in plugins:
-        try:
-            manager.add_plugin(plugin, constructor)
-        except exception.PluginXmlErr:
-            # We encountered an error in the plugin's XML file.  We don't want
-            # this to kill execution of Fuzzbunch
-            import os.path
-            (d,f) = os.path.split(plugin[0])
-            n = f.split('-')[0]
-            fb.io.pre_input(None)
-            fb.io.print_warning("Failed to load %s - XML Error" % (str(n)))
-            fb.io.post_input()
+        print(plugin, constructor)
+        manager.add_plugin(plugin, constructor)
+        # try:
+        #     manager.add_plugin(plugin, constructor)
+        # except exception.PluginXmlErr:
+        #     # We encountered an error in the plugin's XML file.  We don't want
+        #     # this to kill execution of Fuzzbunch
+        #     import os.path
+        #     (d,f) = os.path.split(plugin[0])
+        #     n = f.split('-')[0]
+        #     fb.io.pre_input(None)
+        #     fb.io.print_warning("Failed to load %s - XML Error" % (str(n)))
+        #     fb.io.post_input()
 

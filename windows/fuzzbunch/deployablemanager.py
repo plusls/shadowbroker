@@ -64,7 +64,7 @@ class DeployableManager(PluginManager):
 
             listenPort = 0
             if runMode in ("DANE", "DAVE"):
-                pairs = sorted((k, k) for k in plugin.package_arches.iterkeys())
+                pairs = sorted((k, k) for k in plugin.package_arches.keys())
                 self.io.print_prompt_param({
                     "name": "ArchOs",
                     "description": "Architecture/OS of REDIRECTOR",

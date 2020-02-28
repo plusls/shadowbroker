@@ -16,6 +16,15 @@ try:
 except:
     from pytrch import TrchError
 
+import platform
+if (platform.python_version_tuple()[0] == '3'):
+    raw_input = input
+    long = int
+    xrange = range
+else:
+    range = xrange
+
+
 __all__ = ["attribute_convert", "Parameter", 
            "Paramgroup", "Paramchoice",
            "Config", "Params", "Param"]
@@ -27,6 +36,10 @@ def attribute_convert(val):
         return "YES"
     else:
         return "NO"
+
+def encode_list(l):
+    for i in xrange(len(l)):
+        l[i] = l[i].encode('latin')
 
 class Parameter:
     def __init__(self, paramStruct):
@@ -152,19 +165,19 @@ class Parameter:
         return [x.strip() for x in l.split(',')]
 
     def getDescription(self):
-        return trch.Parameter_getDescription(self.param)
+        return trch.Parameter_getDescription(self.param).decode('latin')
 
     def getFormat(self):
-        return trch.Parameter_getFormat(self.param)
+        return trch.Parameter_getFormat(self.param).decode('latin')
 
     def getName(self):
-        return trch.Parameter_getName(self.param)
+        return trch.Parameter_getName(self.param).decode('latin')
 
     def getType(self):
-        return trch.Parameter_getType(self.param)
+        return trch.Parameter_getType(self.param).decode('latin')
 
     def getMarshalledDefault(self):
-        return trch.Parameter_getMarshalledDefault(self.param)
+        return trch.Parameter_getMarshalledDefault(self.param).decode('latin')
 
     def getValue(self):
         if self.hasValue():
@@ -262,22 +275,22 @@ class Parameter:
         trch.Parameter_Boolean_setValue(self.param, int(value))
 
     def IPv4_getValue(self):
-        return trch.Parameter_IPv4_getValue(self.param)
+        return trch.Parameter_IPv4_getValue(self.param).decode('latin')
 
     def IPv4_setValue(self, value):
-        trch.Parameter_IPv4_setValue(self.param, value)
+        trch.Parameter_IPv4_setValue(self.param, value.encode('latin'))
 
     def IPv6_getValue(self):
-        return trch.Parameter_IPv6_getValue(self.param)
+        return trch.Parameter_IPv6_getValue(self.param).decode('latin')
 
     def IPv6_setValue(self, value):
-        trch.Parameter_IPv6_setValue(self.param, value)
+        trch.Parameter_IPv6_setValue(self.param, value.encode('latin'))
 
     def LocalFile_getValue(self):
-        return os.path.normpath(trch.Parameter_LocalFile_getValue(self.param))
+        return os.path.normpath(trch.Parameter_LocalFile_getValue(self.param).decode('latin'))
 
     def LocalFile_setValue(self, value):
-        trch.Parameter_LocalFile_setValue(self.param, os.path.normpath(value))
+        trch.Parameter_LocalFile_setValue(self.param, os.path.normpath(value).encode('latin'))
 
     def TcpPort_getValue(self):
         return str(trch.Parameter_Port_getValue(self.param))
@@ -322,10 +335,10 @@ class Parameter:
         trch.Parameter_Socket_setValue(self.param, int(value))
 
     def String_getValue(self):
-        return trch.Parameter_String_getValue(self.param)
+        return trch.Parameter_String_getValue(self.param).decode('latin')
 
     def String_setValue(self, value):
-        trch.Parameter_String_setValue(self.param, value)
+        trch.Parameter_String_setValue(self.param, value.encode('latin'))
 
     def U16_getValue(self):
         return str(trch.Parameter_U16_getValue(self.param))
@@ -354,7 +367,7 @@ class Parameter:
     def UString_getValue(self):
         bytes = trch.Parameter_UString_getValue(self.param)
         if bytes:
-            return binascii.hexlify(bytes)
+            return binascii.hexlify(bytes).decode('latin')
         else:
             return ""
 
@@ -368,7 +381,7 @@ class Parameter:
     def Buffer_getValue(self):
         bytes = trch.Parameter_Buffer_getValue(self.param)
         if bytes:
-            return binascii.hexlify(bytes)
+            return binascii.hexlify(bytes).decode('latin')
         else:
             return ""
 
@@ -403,29 +416,32 @@ class Parameter:
 
     def IPv4_List_setValue(self, value):
         arg = self._tokenize_list(value)
+        encode_list(arg)
         trch.Parameter_IPv4_List_setValue(self.param, arg)
 
     def IPv4_List_getValue(self):
         tokens = trch.Parameter_IPv4_List_getValue(self.param)
-        twrapped = ["'" + x + "'" for x in tokens]
+        twrapped = ["'" + x.decode('latin') + "'" for x in tokens]
         return '[' + ', '.join(twrapped) + ']'
 
     def IPv6_List_setValue(self, value):
         arg = self._tokenize_list(value)
+        encode_list(arg)
         trch.Parameter_IPv6_List_setValue(self.param, arg)
 
     def IPv6_List_getValue(self):
         tokens = trch.Parameter_IPv6_List_getValue(self.param)
-        twrapped = ["'" + x + "'" for x in tokens]
+        twrapped = ["'" + x.decode('latin') + "'" for x in tokens]
         return '[' + ', '.join(twrapped) + ']'
 
     def LocalFile_List_setValue(self, value):
         arg = self._tokenize_list(value)
+        encode_list(arg)
         trch.Parameter_LocalFile_List_setValue(self.param, arg)
 
     def LocalFile_List_getValue(self):
         tokens = trch.Parameter_LocalFile_List_getValue(self.param)
-        twrapped = ["'" + x + "'" for x in tokens]
+        twrapped = ["'" + x.decode('latin') + "'" for x in tokens]
         return '[' + ', '.join(twrapped) + ']'
 
     def TcpPort_List_setValue(self, value):
@@ -484,11 +500,12 @@ class Parameter:
 
     def String_List_setValue(self, value):
         arg = self._tokenize_list(value)
+        encode_list(arg)
         trch.Parameter_String_List_setValue(self.param, arg)
 
     def String_List_getValue(self):
         tokens = trch.Parameter_String_List_getValue(self.param)
-        twrapped = ["'" + x + "'" for x in tokens]
+        twrapped = ["'" + x.decode('latin') + "'" for x in tokens]
         return '[' + ', '.join(twrapped) + ']'
 
     def U16_List_setValue(self, value):
@@ -532,11 +549,12 @@ class Parameter:
             else:
                 decoded_val = binascii.unhexlify(tok)
             values.append(decoded_val)
+        encode_list(values)
         trch.Parameter_UString_List_setValue(self.param, values)
 
     def UString_List_getValue(self):
         tokens = trch.Parameter_UString_List_getValue(self.param)
-        strlist = ("'" + binascii.hexlify(l) + "'" for l in tokens)
+        strlist = ("'" + binascii.hexlify(l).decode('latin') + "'" for l in tokens)
         return '[' + ', '.join(strlist) + ']'
 
     def Buffer_List_setValue(self, value):
@@ -548,11 +566,12 @@ class Parameter:
             else:
                 decoded_val = binascii.unhexlify(tok)
             values.append(decoded_val)
+        encode_list(values)
         trch.Parameter_Buffer_List_setValue(self.param, values)
 
     def Buffer_List_getValue(self):
         tokens = trch.Parameter_Buffer_List_getValue(self.param)
-        strlist = ("'" + binascii.hexlify(l) + "'" for l in tokens)
+        strlist = ("'" + binascii.hexlify(l).decode('latin') + "'" for l in tokens)
         return '[' + ', '.join(strlist) + ']'
 
 
@@ -564,12 +583,12 @@ class Paramgroup:
 
         for i in xrange(0, self.getNumParameters()):
             param = trch.Paramgroup_getParameter(paramGroup, i)
-            name = trch.Parameter_getName(param)
+            name = trch.Parameter_getName(param).decode('latin')
             self.paramList[name.lower()] = Parameter(param)
 
         for i in xrange(0, self.getNumParamchoices()):
             paramChoice = trch.Paramgroup_getParamchoice(paramGroup, i)
-            name = trch.Paramchoice_getName(paramChoice)
+            name = trch.Paramchoice_getName(paramChoice).decode('latin')
             self.choiceList[name.lower()] = Paramchoice(paramChoice)
 
     def __repr__(self):
@@ -586,7 +605,7 @@ class Paramgroup:
         return trch.Paramgroup_getDescription(self.group)
 
     def getName(self):
-        return trch.Paramgroup_getName(self.group)
+        return trch.Paramgroup_getName(self.group).decode('latin')
 
     def getNumParamchoices(self):
         return trch.Paramgroup_getNumParamchoices(self.group)
@@ -644,7 +663,7 @@ class Paramchoice:
         self.groupNames = []
         for i in xrange(0, self.getNumParamgroups()):
             paramGroup = trch.Paramchoice_getParamgroup(paramChoice, i)
-            name = trch.Paramgroup_getName(paramGroup)
+            name = trch.Paramgroup_getName(paramGroup).decode('latin')
             self.groupNames.append(name.lower())
             self.groupList[name.lower()] = Paramgroup(paramGroup)
     
@@ -659,13 +678,13 @@ class Paramchoice:
         return "".join(items)
 
     def getDefaultValue(self):
-        return trch.Paramchoice_getDefaultValue(self.choice)
+        return trch.Paramchoice_getDefaultValue(self.choice).decode('latin')
 
     def getDescription(self):
-        return trch.Paramchoice_getDescription(self.choice)
+        return trch.Paramchoice_getDescription(self.choice).decode('latin')
 
     def getName(self):
-        return trch.Paramchoice_getName(self.choice)
+        return trch.Paramchoice_getName(self.choice).decode('latin')
 
     def getNumParamgroups(self):
         return trch.Paramchoice_getNumParamgroups(self.choice)
@@ -675,7 +694,7 @@ class Paramchoice:
 
     def getValue(self):
         if self.hasValue():
-            return trch.Paramchoice_getValue(self.choice)
+            return trch.Paramchoice_getValue(self.choice).decode('latin')
         else:
             return ""
 
@@ -719,7 +738,7 @@ class Paramchoice:
         return trch.Paramchoice_matchName(self.choice, str(name))
 
     def setValue(self, value):
-        trch.Paramchoice_setValue(self.choice, str(value))
+        trch.Paramchoice_setValue(self.choice, str(value).encode('latin'))
 
     def resetValue(self):
         v = self.getDefaultValue()
@@ -752,20 +771,21 @@ class Config:
         self.init_config()
 
     def init_config(self):
-        self.configXML     = exma.readParamsFromEM(ctypes.c_char_p(self.xmlInConfig.encode()))
+        self.configXML     = exma.readParamsFromEM(ctypes.c_char_p(self.xmlInConfig.encode('latin'))).decode('latin')
         # Config_unmarshal can fail and return None, which 
         # raises TrchError when passed to Config_getID
         try:
-            print(repr(self.xmlInConfig))
-            self.config        = trch.Config_unmarshal(self.configXML)
+            self.config        = trch.Config_unmarshal(self.configXML.encode('latin'))
             if self.config is None:
                 raise TrchError("Parse error in the output configuration")
-            self.id            = trch.Config_getID(self.config)
-            self.name          = trch.Config_getName(self.config)
-            self.version       = trch.Config_getVersion(self.config)
-            self.configVersion = trch.Config_getConfigVersion(self.config)
-            self.namespaceUri  = trch.Config_getNamespaceUri(self.config)
+            self.id            = trch.Config_getID(self.config).decode('latin')
+            self.name          = trch.Config_getName(self.config).decode('latin')
+            self.version       = trch.Config_getVersion(self.config).decode('latin')
+            self.configVersion = trch.Config_getConfigVersion(self.config).decode('latin')
+            self.namespaceUri  = trch.Config_getNamespaceUri(self.config).decode('latin')
             self.schemaVersion = trch.Config_getSchemaVersion(self.config)
+            if self.schemaVersion is not None:
+                self.schemaVersion = self.schemaVersion.decode('latin')
         except TrchError:
             raise
 
@@ -787,11 +807,11 @@ class Config:
         return "".join(items)
 
     def getMarshalledInConfig(self):
-        c = trch.Config_marshal(self.config, "t", None)
+        c = trch.Config_marshal(self.config, "t".encode('latin'), None).decode('latin')
         return c
 
     def putMarshalledConfig(self, filename):
-        c = trch.Config_marshal(self.config, "t", None)
+        c = trch.Config_marshal(self.config, "t".encode('latin'), None)
         if isinstance(filename, str):
             with open(filename, "wb") as fh:
                 fh.write(c)
@@ -828,12 +848,12 @@ class Params:
         
         for i in xrange(0, self.getNumParameters()):
             param = trch.Params_getParameter(self.parameters, i)
-            name = trch.Parameter_getName(param)
+            name = trch.Parameter_getName(param).decode('latin')
             self.paramList[name.lower()] = Parameter(param)
 
         for i in xrange(0, self.getNumParamchoices()):
             paramChoice = trch.Params_getParamchoice(self.parameters, i)
-            name = trch.Paramchoice_getName(paramChoice)
+            name = trch.Paramchoice_getName(paramChoice).decode('latin')
             self.choiceList[name.lower()] = Paramchoice(paramChoice)
 
     def __repr__(self):
@@ -847,14 +867,14 @@ class Params:
         return "".join(items)
         
     def findParamchoice(self, name):
-        param = trch.Params_findParamchoice(self.parameters, str(name))
+        param = trch.Params_findParamchoice(self.parameters, str(name).encode('latin'))
         if param:
             return Paramchoice(param)
         else:
             return None
 
     def findParameter(self, name):
-        param = trch.Params_findParameter(self.parameters, str(name))
+        param = trch.Params_findParameter(self.parameters, str(name).encode('latin'))
         if param:
             return Parameter(param)
         else:
